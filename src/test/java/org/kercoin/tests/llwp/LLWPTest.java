@@ -1,9 +1,10 @@
-package org.kercoin.tests.lwpd;
+package org.kercoin.tests.llwp;
 
 
 import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.kercoin.tests.llwp.LLWP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

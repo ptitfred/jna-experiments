@@ -1,4 +1,4 @@
-package org.kercoin.tests.lwpd;
+package org.kercoin.tests.llwp;
 
 import com.sun.jna.LastErrorException;
 import com.sun.jna.Native;
@@ -32,13 +32,9 @@ public class LLWP {
     public static int getThreadPid() {
         int tid = getTid();
         if (tid == -1) {
-            return getPid();
+            return getpid();
         }
         return tid;
-    }
-
-    public static int getPid() {
-        return getpid();
     }
 
     private static final long SYS_gettid_32b = 224;
@@ -59,6 +55,14 @@ public class LLWP {
     @Deprecated
     long SYS_getpid = 20; // rather use libc getpid() which brings caching
 
-    static native int getpid() throws LastErrorException;
+    /**
+     * <p>LibC <a href="http://linux.die.net/man/2/getpid">getpid</a> call.</p>
+     * <p>Unfortunatly, this will give the PID of the java/javaw executable, not thread's PIDs due to the way the JVM creates threads.</p>
+     * <p>{@link #getPid()} will call the GLibC which caches PIDs, but since the JVM bypasses GLibC fork/clone calls, the PIDs is stuck to the parent ID.</p>
+     * @see LLWP#getThreadPid() for correct PID.
+     * @return
+     */
+    public static native int getpid() throws LastErrorException;
+
     static native int syscall(long callid) throws LastErrorException;
 }
